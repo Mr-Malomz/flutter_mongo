@@ -139,7 +139,7 @@ class _DetailState extends State<Detail> {
         onPressed: () {
           //todo
         },
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.red,
         tooltip: 'Delete',
         child: const Icon(Icons.delete),
       ),
