@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mongo/phone_service.dart';
+import 'package:flutter_mongo/screens/home.dart';
 
 class Create extends StatefulWidget {
   const Create({
@@ -11,6 +13,37 @@ class Create extends StatefulWidget {
 
 class _CreateState extends State<Create> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _fullname = TextEditingController();
+  final TextEditingController _phonenumber = TextEditingController();
+  bool _isLoading = false;
+
+  createContact() {
+    setState(() {
+      _isLoading = true;
+    });
+
+    PhoneService()
+        .createPhoneContact(_fullname.text, int.parse(_phonenumber.text))
+        .then((value) {
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Contact created successfully!')),
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const Home()),
+      );
+    }).catchError((onError) {
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error creating contact!')),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +73,7 @@ class _CreateState extends State<Create> {
                       ),
                       const SizedBox(height: 5.0),
                       TextFormField(
+                        controller: _fullname,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please input your fullname';
@@ -77,6 +111,7 @@ class _CreateState extends State<Create> {
                       ),
                       const SizedBox(height: 5.0),
                       TextFormField(
+                        controller: _phonenumber,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please input your phone number';
@@ -112,11 +147,13 @@ class _CreateState extends State<Create> {
                 height: 45,
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      //todo
-                    }
-                  },
+                  onPressed: _isLoading
+                      ? null
+                      : () {
+                          if (_formKey.currentState!.validate()) {
+                            createContact();
+                          }
+                        },
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.black),
