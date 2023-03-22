@@ -8,8 +8,8 @@ class PhoneService {
   final String _dataSource = "Cluster0";
   final String _database = "phonebook";
   final String _collection = "phonebookCollection";
-  final String _endpoint = "<REPLACE WITH YOUR ENDPOINT URL>";
-  static const _apiKey = "REPLACE WITH YOUR API KEY";
+  final String _endpoint = "<REPLACE WITH THE ENDPOINT URL>";
+  static const _apiKey = "REPLACE WITH THE API KEY";
 
   var headers = {
     "content-type": "application/json",

@@ -23,11 +23,11 @@ class _DetailState extends State<Detail> {
 
   @override
   void initState() {
-    getContacts();
+    getSingleContact();
     super.initState();
   }
 
-  getContacts() {
+  getSingleContact() {
     setState(() {
       _isLoading = true;
     });
